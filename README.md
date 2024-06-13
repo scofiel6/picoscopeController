@@ -1,2 +1,2 @@
 # picoscopeController
-# Use app1_autoreflow_exported.m as the main file.
+## Use app1_autoreflow_exported.m as the main file.
