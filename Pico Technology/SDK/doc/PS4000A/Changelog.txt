@@ -1,0 +1,95 @@
+Fri Feb 16 2024 ps4000a Version 2.1.133.5818
+  * Fix issue with window trigger missing fast transitions on PicoScope 4225 4225A 4425 4425A
+  * Fix for TA301 Not updating power pins when switching to 2000A mode from being off
+  * Fixed AC coupled offset when a probe is connected
+  * Fix for samples being lost when streaming at maximum rate, PicoScope 4224A 4424A 4824A
+  * Fix for frequency counter with BNC lead malfunction if BNC+ probe was previously plugged into a channel
+
+Fri June 09 2023 ps4000a Version 2.1.116.3546
+  * Fix for the aggregated samples on certain timebases does not match the capture time in streaming
+  * Fix for decimated data types in streaming 32bit drivers only
+  * Fix for trigger threshold properties not applied correctly in 2-channel mode for 4+ channel scopes
+  * Fix for corruption in the copyright message of ps4000a.dll
+  * Fixed crash on windows when a device is plugged and unplugged to/from the USB Port
+  * Enable BNC+ probes to use frequency counter feature available on 4225A and 4425A devices
+
+Fri Dec 09 2022 ps4000a Version 2.1.104.3324
+  * Fix for incorrect data at start of a buffer when capture stopped
+  * Fix for triggerAt index which could be out by 1 or 9 samples when streaming
+  * Fix for Level dropout trigger failing to fire when specified conditions have been met
+  * Fix inverted range on HT Pickup probe, data in incorrect user min max buffers
+  * Trigger threshold precision is now respected for resolution greater than 8 bits affecting all flex-res devices
+  * Support for new hardware revision of PicoScope 4000A
+
+Thu Feb 17 2022 ps4000a Version 2.1.82.3072
+  * No changes
+
+Tue Jan 18 2022 ps4000a Version 2.1.80.3041
+  * No Changes
+
+Thu Oct 10 2021 ps4000a Version 2.1.75.2957
+  * Cumulative internal fixes
+
+Weds Sep 08 2021 ps4000a version 2.1.73.2910
+  * PicoStatus.h - improved description of PICO_POWER_SUPPLY_CONNECTED/PICO_POWER_SUPPLY_NOT_CONNECTED status
+  * MacOS/Linux - fixed ps4000aPingUnit returning PICO_OK when unplugged
+  * MacOS - fixed a usb stack issue occassionally causing the driver to fail over with an uncaught error code while opening the device
+
+Wed June 02 2021 ps4000a version 2.1.67.2674
+  * Fix to issue affecting 4425A when USB current supply is too low
+
+Tue Apr 20 2021 ps4000a version 2.1.63.2625
+  * No changes
+
+Tue Mar 16 2021 ps4000a version 2.1.63.2614
+  * Removal of PICO_LOGIC_LOWER and PICO_LOGIC_UPPER, these were internally used configuration values and have been removed for simplicity
+  * Added new ps4000aGetAccessioryInfo for obtaining serial numbers and calibration dates of smart probes
+
+Thu Feb 11 2021 ps4000a version 2.1.57.2542
+  * No changes
+
+Thu Feb 4 2021 ps4000a version 2.1.57.2542
+  * Cumulative fixes
+
+Tue Jan 5 2021 ps4000a version 2.1.54.2438
+  * Changes to MAC installer
+  * Cumulative fixes
+
+Thu Aug 27 2020 ps4000a version 2.1.47.2276
+  * Fix for a case  4444 reporting PICO_USB3_0_DEICE_NON_USB3_0_PORT when on USB2.0 with a power supply plugged in
+  * Fix for an issue where a 4444 was not sometimes not detecting probers accurately
+  * Cumulative fixes
+
+Mon Jun 29 2020 ps4000a version 2.1.44.2193
+  * Added support for new devices (4224A, 4424A, and 4824A)
+  * Cumulative fixes
+
+Mon Jun 1 2020 ps4000a version 2.1.41.2154
+  * Fix for incorrect version of IPP on certain OS'
+  * Cumulative Fixes
+
+Mon Apr 6 2020 ps4000a version 2.1.37.2061
+  * Added support for new devices (4425A and 4225A)
+  * Fixed an occasional crash that occurred in streaming mode on channel E or F on an 8 channel scope
+  * fixed an issue with ps4000aGetAnalogueOffset reporting the wrong status
+  * Cumulative fixes
+
+
+Tue Apr 30 2019 ps4000a v2.1.17.1454
+  * Fix for PicoConnect 442 differential probe 1kV range trigger.
+  * Renamed PicoConnectProbe enum members.
+  * Cumulative fixes
+
+Mon Jun 26 13:15:00 2017 ps4000a v1.3.0.105
+  * Cumulative fixes
+  * Support for new scope; Picoscope 4444
+
+Tue Sep 08 09:18:26 2015 ps4000a v1.0.4.56
+  * Bug: Read bulk waveforms followed by individual waveforms the latter are incorrect.
+
+Thu Jun 25 12:44:58 2015 ps4000a v1.0.4.49
+  * Fix for corrupted firmware cache
+
+Mon Feb 23 09:10:50 2015 ps4000a v1.0.4.44
+  * Bug: Application Crash - System.ArgumentOutOfRangeException indicating index out of range and Driver error
+

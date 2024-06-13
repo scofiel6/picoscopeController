@@ -1,0 +1,69 @@
+Fri Feb 16 2024 ps2000 Version 3.0.133.5818
+  * Ensured every waveform in Streaming in PS2203, PS2204, PS2204A, PS2205 and PS2205A get captured in their entirety
+  * Fixed time offset of triggered streaming waveforms with certain settings on PicoScope 2203, 2204, 2204A, 2205, 2205A
+
+Fri June 09 2023 ps2000 Version 3.0.116.3546
+  * No changes
+
+Fri Dec 09 2022 ps2000 Version 3.0.104.3324
+  * No changes
+
+Thu Feb 17 2022 ps2000 Version 3.0.82.3072
+  * No changes
+
+Tue Jan 18 2022 ps2000 Version 3.0.80.3041
+  * No changes
+
+Thu Oct 10 2021 ps2000 Version 3.0.75.2957
+  * Cumulative internal fixes
+
+Weds Sep 08 2021 ps2000 version 3.0.73.2910
+  * MacOS/Linux - fixed ps2000PingUnit returning PICO_OK when unplugged
+  * MacOS - fixed a usb stack issue occassionally causing the driver to fail over with an uncaught error code while opening the device
+
+Wed June 02 2021 ps2000 version 3.0.67.2674
+  * No changes
+
+Tue Apr 20 2021 ps2000 version 3.0.63.2625
+  * No changes
+
+Tue Mar 16 2021 ps2000 version 3.0.63.2621
+  * Support for devices with 4-digit serial numbers (manufactured after Apr 2021).
+
+Thu Feb 11 2021 ps2000 version 3.0.57.2542
+  * No changes
+
+Thu Feb 4 2021 ps2000 version 3.0.57.2542
+  * Cumulative fixes
+
+Tue Jan 5 2021 ps2000 version 3.0.54.2438
+  * Changes to MAC installer
+  * Cumulative fixes
+
+Thu Aug 27 2020 ps2000 version 3.0.47.2276
+  * Cumulative fixes
+
+Mon Jun 29 2020 ps2000 version 3.0.44.2193
+  * Cumulative fixes
+
+Mon Jun 1 2020 ps2000 version 3.0.41.2154
+  * Fix for incorrect version of IPP on certain OS'
+  * Cumulative Fixes
+
+Mon Apr 6 2020 ps2000 version 3.0.37.2061
+  * Fixed for high CPU usage when collecting data in fast and compatible streaming modes
+  * Cumulative fixes
+
+
+Tue Apr 30 2019 ps2000 v3.0.17.1457
+  * Cumulative fixes
+
+Mon Jun 26 13:15:00 2017 ps2000 v2.3.0.6
+  * Cumulative fixes
+
+Thu Jun 25 12:32:33 2015 ps2000 v3.0.4.43
+  * Bug: Sweep modes not set correctly for PS2205
+
+Wed Nov 26 09:59:06 2014 ps2000 v3.0.4.16
+  * Bug: Logic Trigger - NAND, NOR and XNOR not working correctly
+

@@ -1,0 +1,63 @@
+Fri Feb 16 2024 plcm3 Version 2.0.133.5818
+  * No changes
+
+Fri June 09 2023 plcm3 Version 2.0.116.3546
+  * No changes
+
+Fri Dec 09 2022 plcm3 Version 2.0.104.3324
+  * No changes
+
+Thu Feb 17 2022 plcm3 Version 2.0.82.3072
+  * No changes
+
+Tue Jan 18 2022 plcm3 Version 2.0.80.3041
+  * No changes
+
+Thu Oct 10 2021 plcm3 Version 2.0.75.2957
+  * Cumulative internal fixes
+
+Weds Sep 08 2021 plcm3 version 2.0.73.2910
+  * MacOS - fixed a usb stack issue occassionally causing the driver to fail over with an uncaught error code while opening the device
+
+Wed June 02 2021 plcm3 version 2.0.67.2674
+  * No changes
+
+Tue Apr 20 2021 plcm3 version 2.0.63.2625
+  * No changes
+
+Tue Mar 16 2021 plcm3 version 2.0.63.2614
+  * No changes
+
+Thu Feb 11 2021 plcm3 version 2.0.57.2542
+  * No changes
+
+Thu Feb 4 2021 plcm3 version 2.0.57.2542
+  * No major changes
+
+Tue Jan 5 2021  plcm3 version 2.0.54.2438
+  * Changes to MAC installer
+  * No major changes
+
+Thu Aug 27 2020 plcm3 version 2.0.47.2276
+  * No major changes
+
+Mon Jun 29 2020 plcm3 version 2.0.44.2193
+  * No major changes
+
+Mon Jun 1 2020 plcm3 version 2.0.41.2154
+  * No major changes
+
+Mon Apr 6 2020 plcm3 version 2.0.37.2062
+  * No major changes
+
+
+Tue Apr 30 2019 plcm3 v2.0.17.1455
+  * Cumulative fixes
+
+Mon Jun 26 13:15:00 2017 plcm3 v1.1.0.7
+  * Cumulative fixes
+
+Wed Jul 29 14:56:03 2015 plcm3 v1.0.4.10
+  * Bug: Information returned from PLCM3Enumerate function adds colon to port number for Ethernet connected devices
+  * Bug: PLCM3Enumerate does not detect Ethernet connected devices when a CM3 is connected locally
+  * Bug: Call to PLCM3OpenUnit does not return status code PICO_NOT_FOUND if a device is not connected
