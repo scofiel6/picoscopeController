@@ -1,0 +1,93 @@
+Fri Feb 16 2024 ps5000 Version 2.1.133.5818
+  * No changes
+
+Fri June 09 2023 ps5000 Version 2.1.116.3546
+  * Fix for decimated data types in streaming 32bit drivers only
+  * Fixed crash on windows when a device is plugged and unplugged to/from the USB Port
+
+Fri Dec 09 2022 ps5000 Version 2.1.104.3324
+  * No changes
+
+Thu Feb 17 2022 ps5000 Version 2.1.82.3072
+  * No changes
+
+Tue Jan 18 2022 ps5000 Version 2.1.80.3041
+  * No Changes
+
+Thu Oct 10 2021 ps5000 Version 2.1.75.2957
+  * No Changes
+
+Weds Sep 08 2021 ps5000 version 2.1.73.2910
+  * PicoStatus.h - improved description of PICO_POWER_SUPPLY_CONNECTED/PICO_POWER_SUPPLY_NOT_CONNECTED status
+  * MacOS/Linux - fixed ps5000PingUnit returning PICO_OK when unplugged
+  * MacOS - fixed a usb stack issue occassionally causing the driver to fail over with an uncaught error code while opening the device
+
+Wed June 02 2021 ps5000 version 2.1.67.2674
+  * No changes
+
+Tue Apr 20 2021 ps5000 version 2.1.63.2625
+  * No changes
+
+Tue Mar 16 2021 ps5000 version 2.1.63.2614
+  * No changes
+
+Thu Feb 11 2021 ps5000 version 2.1.57.2542
+  * No changes
+
+Thu Feb 4 2021 ps5000 version 2.1.57.2542
+  * Cumulative fixes
+
+Tue Jan 5 2021 ps5000 version 2.1.54.2438
+  * Changes to MAC installer
+  * Cumulative fixes
+
+Thu Aug 27 2020 ps5000 version 2.1.47.2276
+  * Cumulative fixes
+
+Mon Jun 29 2020 ps5000 version 2.1.44.2193
+  * Cumulative fixes
+
+Mon Jun 1 2020 ps5000 version 2.1.41.2154
+  * Fix for incorrect version of IPP on certain OS'
+  * Cumulative Fixes
+
+Mon Apr 6 2020 ps5000 version 2.1.37.2061
+  * Cumulative fixes
+
+Tue Apr 30 2019 ps5000 v2.1.17.1454
+  * Cumulative fixes
+
+Mon Jun 26 13:15:00 2017 ps5000 v1.7.0.8
+  * Cumulative fixes
+
+Tue Sep 08 09:18:26 2015 ps5000 v1.5.4.34
+  * Bug: Device does not auto-trigger in streaming mode,
+  * Bug: PicoScope 5204 stops collecting data in slow streaming mode when signal generator is turned off
+  * Fix for corrupted firmwar cache
+  * Fix for allowing the api thread to run prematurely before all variables are initalised correctly.
+
+Mon Feb 23 09:10:50 2015 ps5000 v1.5.4.31
+  * Bug: PS5204 hangs when setting 5000s/div timebase
+  * Bug: Application Crash - System.ArgumentOutOfRangeException indicating index out of range and Driver error
+  * Bug: 5203 collection is twice as fast as expected with collection time greater than 100s/div
+
+Wed Jan 07 09:08:34 2015 ps5000 v1.5.4.21
+  * When using multiple calls to the ps5000aOpenUnit when the first call opens a unit and the second call does not when closing the opened device immediately the driver asserts.
+
+Wed Dec 03 16:54:28 2014 ps5000 v1.5.4.18
+  * Fixed memory leaks.
+
+Thu Nov 27 12:38:01 2014 ps5000 v1.5.4.17
+  * Bug: Application Lock Up - If the scope connection is removed while running Clamp Wizard
+
+Mon Nov 03 10:54:00 2014 ps5000 v1.5.4.13
+  * When changing from repeat trigger and channel A and channel B are both enabled, then channel B is disabled
+
+Mon Oct 06 11:00:31 2014 ps5000 v1.5.4.12
+  * Bug: Streaming data collection - raw data corruption
+  * Fix for ps5000 driver data collection
+  * Fix for ets and streaming at slow sample intervals
+
+Tue Sep 23 10:19:50 2014 ps5000 v1.5.4.3
+  * Fix for ensuring that the delta phase is rounded in the correct direction and to the nearest intergral value.
+  * Update for using the drivers with JNI interaction, seems that the stack memory was overflowing.
