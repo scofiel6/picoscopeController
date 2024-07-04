@@ -93,13 +93,13 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
     
     methods (Access = private)
         
-        %% AWG ÿ1ÿ (sin form)
+        %% AWG ï¿½1ï¿½ (sin form)
         function sig_cw(app,Obj,timebaseIndex,f,N)
             PS5000aConfig;
             sigGenGroupObj = get(Obj, 'Signalgenerator');
             sigGenGroupObj = sigGenGroupObj(1);
             Tinterval = (timebaseIndex-2)/125000000;
-            % sig frequency fÿwave number for one capture N
+            % sig frequency fï¿½wave number for one capture N
             if ~exist('f','var');f = 25e5;end
             if ~exist('N','var');N = 3;end
             fsstart = 1/(N/f-Tinterval);
@@ -130,13 +130,13 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 operation, indexMode, shots, sweeps,...
                 triggerType, triggerSource, extInThresholdMv);
         end
-        % ÿ2ÿAWG:chirp
+        % ï¿½2ï¿½AWG:chirp
         function sig_chirp(app,Obj,timebaseIndex,f,N,f_start,f_end)
             PS5000aConfig;
             sigGenGroupObj = get(Obj, 'Signalgenerator');
             sigGenGroupObj = sigGenGroupObj(1);
             Tinterval = (timebaseIndex-2)/125000000;
-            % sig frequency fÿwave number for one capture N
+            % sig frequency fï¿½wave number for one capture N
             if ~exist('f','var');f = 25e5;end
             if ~exist('N','var');N = 3;end
             if ~exist('f_start','var');f_start = f/sqrt(2);end
@@ -171,7 +171,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
         end
         %% 
         function [chA,chB,chC,chD,fs] = func_rapidBlockCap(app,Obj,timebaseIndex,numSSamples,numCaptures)
-            if ~exist('numsamples','var');numSSamples = 15000;end
+%             if ~exist('numsamples','var');numSSamples = 15000;end
             if ~exist('numCaptures','var');numCaptures = 50;end
             PS5000aConfig;
             nSegments = 100;
@@ -233,38 +233,46 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
 %             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\github_repo'));
 %             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\Pico Technology'));
 %             
-            app.Lamp_condition.Text        = strcat('Device Is Not Connectedÿ');
-            app.chA_width                  = 7;
-            app.chB_width                  = 7;
-            app.chC_width                  = 7;
-            app.chD_width                  = 7;
-            app.channelResolution          = 15;
-            app.prefs                      = 1.25e8;
-            app.freq                       = 25e5;
-            app.waveNum                    = 3;
-            app.f_start                    = app.freq /sqrt(2);
-            app.f_end                      = app.freq *sqrt(2);
-            app.Ulti_channel_choice        = 'channel A';
-            app.Ulti_eject_choice          = 'Frequency Setting';
-            app.FreqRangeHzEditField.Value = num2str(app.freq/sqrt(2));
-            app.HzEditField_2.Value        = num2str(app.freq*sqrt(2));
-            app.cd                         = [fullfile(getenv('USERPROFILE'), 'Desktop'),'\'];
-            app.sigNum                     = 20;
-            app.pauseTime                  = 30; 
-            app.Ulti_receive_choice        = 'Number of Captured Signals';
-            app.sigSampleNum               = 15e3;
-            app.sig_name_choice            = 'saving Path';
-            app.fileName                   = 'forTest.mat';
-            app.numCaptures                = 50;
-            app.breakDown                  = false;
-            app.paraConfirm_choice         = false;
-            app.paraConfirm_choice_2       = false;
-            app.figureNameChannelA         = 'The real-time waveform displays channelA';
-            app.figureNameChannelB         = 'The real-time waveform displays channelB';
-            app.figureNameChannelC         = 'The real-time waveform displays channelC';
-            app.figureNameChannelD         = 'The real-time waveform displays channelD';
-            app.toolBoxfilePath.Value      = pwd;
-            app.targetfile                 = {'github_repo', 'Pico Technology'};
+            app.Lamp_condition.Text         = strcat('Device Is Not Connectedï¿½');
+            app.chA_width                   = 7;
+            app.chB_width                   = 7;
+            app.chC_width                   = 7;
+            app.chD_width                   = 7;
+            app.channelResolution           = 15;
+            app.prefs                       = 1.25e8;
+            app.freq                        = 25e5;
+            app.waveNum                     = 3;
+            app.f_start                     = app.freq /sqrt(2);
+            app.f_end                       = app.freq *sqrt(2);
+            app.Ulti_channel_choice         = 'channel A';
+            app.Ulti_eject_choice           = 'Frequency Setting';
+            app.FreqRangeHzEditField.Value  = num2str(app.freq/sqrt(2));
+            app.HzEditField_2.Value         = num2str(app.freq*sqrt(2));
+            app.cd                          = [fullfile(getenv('USERPROFILE'), 'Desktop'),'\'];
+            app.sigNum                      = 20;
+            app.pauseTime                   = 30; 
+            app.Ulti_receive_choice         = 'Number of Captured Signals';
+            app.sigSampleNum                = 15e3;
+            app.sig_name_choice             = 'saving Path';
+            app.fileName                    = 'forTest.mat';
+            app.numCaptures                 = 50;
+            app.breakDown                   = false;
+            app.paraConfirm_choice          = false;
+            app.paraConfirm_choice_2        = false;
+            app.figureNameChannelA          = 'The real-time waveform displays channelA';
+            app.figureNameChannelB          = 'The real-time waveform displays channelB';
+            app.figureNameChannelC          = 'The real-time waveform displays channelC';
+            app.figureNameChannelD          = 'The real-time waveform displays channelD';
+            app.toolBoxfilePath.Value       = pwd;
+            app.targetfile                  = {'github_repo', 'Pico Technology'};
+            app.recieve_ch1.YLabel.String   = 'Amplitude';
+            app.recieve_ch1_2.YLabel.String = 'Amplitude';
+            app.recieve_ch1_3.YLabel.String = 'Amplitude';
+            app.recieve_ch1_4.YLabel.String = 'Amplitude';
+            app.recieve_ch1.XLabel.String   = 'Sampling Point';
+            app.recieve_ch1_2.XLabel.String = 'Sampling Point';
+            app.recieve_ch1_3.XLabel.String = 'Sampling Point';
+            app.recieve_ch1_4.XLabel.String = 'Sampling Point';
         end
 
         % Value changed function: DeviceConnect
@@ -289,7 +297,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 connect(app.Obj);
                 set(app.Lamp,'color','green');
                 app.DeviceDisconnect.Value = false;
-                app.Lamp_condition.Text = strcat('Device Is Connected Successfullyÿ');
+                app.Lamp_condition.Text = strcat('Device Is Connected Successfullyï¿½');
             end
         end
 
@@ -304,7 +312,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                     delete(app.Obj);
                     app.DeviceConnect.Value = false;
                     set(app.Lamp,'color','red');
-                    app.Lamp_condition.Text = strcat('Device Is Not Connectedÿ');
+                    app.Lamp_condition.Text = strcat('Device Is Not Connectedï¿½');
                 end
             end
         end
@@ -398,14 +406,14 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             timebaseIndex        = floor(125000000/app.prefs) + 2;
             % ----
             Tinterval = (timebaseIndex-2)/125000000;
-            fsstart = 1/(app.waveNum/app.freq-Tinterval);
-            SigFs = 1/Tinterval;
-            to = 1/fsstart;
-            n = 0:1/SigFs:to;
-            x = chirp(n,app.this2double(app.f_start),to,app.this2double(app.f_end));
-            x = (x'.*hanning(length(x)))';
-            y = [zeros(1,1),x,zeros(1,1)];
-            plot(app.recieve_ch1,y);
+            fsstart   = 1/(app.waveNum/app.freq-Tinterval);
+            SigFs     = 1/Tinterval;
+            to        = 1/fsstart;
+            n         = 0:1/SigFs:to;
+            x         = chirp(n,app.this2double(app.f_start),to,app.this2double(app.f_end));
+            x         = (x'.*hanning(length(x)))';
+            y         = [zeros(1,1),x,zeros(1,1)];
+            plot(app.recieve_ch1,y,'color','green');
             xlabel(app.recieve_ch1,'Sampling Point');
             ylabel(app.recieve_ch1,'Amplitude');
             title(app.recieve_ch1,'Setting Signal');
@@ -420,7 +428,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
         % Value changed function: HzEditField_2
         function HzEditField_2ValueChanged(app, event)
             value = app.HzEditField_2.Value;
-            app.f_start = value;
+            app.f_end = value;
         end
 
         % Close request function: UIFigure
@@ -502,15 +510,15 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                     [status.setChC] = invoke(app.Obj, 'ps5000aSetChannel', 2, 1, 1, app.chC_width, 0.0);
                     [status.setChD] = invoke(app.Obj, 'ps5000aSetChannel', 3, 1, 1, app.chD_width, 0.0);
                 end
-                % ÿÿÿ Max. resolution with 2 channels enabled is 15 bits.
+                % ï¿½ï¿½ï¿½ Max. resolution with 2 channels enabled is 15 bits.
                 [status.resolution, resolution] = invoke(app.Obj, 'ps5000aSetDeviceResolution', app.channelResolution);
                 app.paraConfirm_choice = true;
             end
             app.breakDown                   = false;
             app.working_Lamp_condition.Text = 'Collecting Is Underway!';
-            sigNum_output_text              = 'Captured Signal Number:';
-            restTime_output_text            = 'Acquisition Duration::';
-            restTime_output_text_2          = 'Remaining for Acquisition:';
+            sigNum_output_text              = 'Collected Signal Number:';
+            restTime_output_text            = 'Collection Duration::';
+            restTime_output_text_2          = 'Remaining for Collection:';
             timebaseIndex                   = floor(125000000/app.prefs) + 2;
             filename                        = [app.cd,app.fileName];
             test                            = matfile(filename, 'Writable', true);
@@ -546,17 +554,17 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                     end
                     % Save the data
                     if ~isempty(thischC)||~isempty(thischD)
-                        test.(['chA_',ccStr]) = thischA;
-                        test.(['chB_',ccStr]) = thischB;
-                        test.(['chC_',ccStr]) = thischC;
-                        test.(['chD_',ccStr]) = thischD;
-                        plot(app.recieve_ch1,detrend(mean(thischA,2)));
+                        test.(['chA_',ccStr]) = detrend(mean(thischA,2));
+                        test.(['chB_',ccStr]) = detrend(mean(thischB,2));
+                        test.(['chC_',ccStr]) = detrend(mean(thischC,2));
+                        test.(['chD_',ccStr]) = detrend(mean(thischD,2));
+                        plot(app.recieve_ch1,detrend(mean(thischA,2)),'color','green');
                         app.recieve_ch1.Title.String = app.figureNameChannelA;
-                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)));
+                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)),'color','green');
                         app.recieve_ch1_2.Title.String = app.figureNameChannelB;
-                        plot(app.recieve_ch1_3,detrend(mean(thischC,2)));
+                        plot(app.recieve_ch1_3,detrend(mean(thischC,2)),'color','green');
                         app.recieve_ch1_3.Title.String = app.figureNameChannelC;
-                        plot(app.recieve_ch1_4,detrend(mean(thischD,2)));
+                        plot(app.recieve_ch1_4,detrend(mean(thischD,2)),'color','green');
                         app.recieve_ch1_4.Title.String = app.figureNameChannelD;
                         app.recieve_ch1.YLabel.String   = 'Amplitude';
                         app.recieve_ch1_2.YLabel.String = 'Amplitude';
@@ -567,14 +575,14 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                         app.recieve_ch1_3.XLabel.String = 'Sampling Point';
                         app.recieve_ch1_4.XLabel.String = 'Sampling Point';
                     elseif ~isempty(thischD)
-                        test.(['chA_',ccStr]) = thischA;
-                        test.(['chB_',ccStr]) = thischB;
-                        test.(['chC_',ccStr]) = thischC;
-                        plot(app.recieve_ch1,detrend(mean(thischA,2)));
+                        test.(['chA_',ccStr]) = detrend(mean(thischA,2));
+                        test.(['chB_',ccStr]) = detrend(mean(thischB,2));
+                        test.(['chC_',ccStr]) = detrend(mean(thischC,2));
+                        plot(app.recieve_ch1,detrend(mean(thischA,2)),'color','green');
                         app.recieve_ch1.Title.String = app.figureNameChannelA;
-                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)));
+                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)),'color','green');
                         app.recieve_ch1_2.Title.String = app.figureNameChannelB;
-                        plot(app.recieve_ch1_3,detrend(mean(thischC,2)));
+                        plot(app.recieve_ch1_3,detrend(mean(thischC,2)),'color','green');
                         app.recieve_ch1_3.Title.String = app.figureNameChannelC;
                         app.recieve_ch1.YLabel.String   = 'Amplitude';
                         app.recieve_ch1_2.YLabel.String = 'Amplitude';
@@ -583,11 +591,11 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                         app.recieve_ch1_2.XLabel.String = 'Sampling Point';
                         app.recieve_ch1_3.XLabel.String = 'Sampling Point';
                     else
-                        test.(['chA_',ccStr]) = thischA;
-                        test.(['chB_',ccStr]) = thischB;
-                        plot(app.recieve_ch1,detrend(mean(thischA,2)));
+                        test.(['chA_',ccStr]) = detrend(mean(thischA,2));
+                        test.(['chB_',ccStr]) = detrend(mean(thischB,2));
+                        plot(app.recieve_ch1,detrend(mean(thischA,2)),'color','green');
                         app.recieve_ch1.Title.String = app.figureNameChannelA;
-                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)));
+                        plot(app.recieve_ch1_2,detrend(mean(thischB,2)),'color','green');
                         app.recieve_ch1_2.Title.String = app.figureNameChannelB;
                         app.recieve_ch1.YLabel.String   = 'Amplitude';
                         app.recieve_ch1_2.YLabel.String = 'Amplitude';
@@ -610,9 +618,9 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                             pause(interval_time);
                             currentTime                       = datetime('now');
                             durationTime                      = abs(startTime - currentTime);
-                            app.sig_condition_time.Text       = sprintf('%s\n %s',restTime_output_text,string(durationTime));
+                            app.sig_condition_time.Text       = sprintf('%s\n %s',restTime_output_text,strrep(datestr(durationTime, 'dd HH:MM:SS'), ' ', ' days'));
                             dur                               = seconds(totalSeconds) - durationTime;
-                            app.sig_condition_time_2.Text     = sprintf('%s\n %s',restTime_output_text_2,datestr(dur, 'HH:MM:SS'));
+                            app.sig_condition_time_2.Text     = sprintf('%s\n %s',restTime_output_text_2,strrep(datestr(dur, 'dd HH:MM:SS'), ' ', ' days'));
                             app.sig_condition_time_2.FontName = 'Times New Roman';
                             if app.breakDown == true
                                 this_choice = true;
@@ -628,7 +636,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 end
             end
             set(app.working_Lamp,'color','black');
-            app.working_Lamp_condition.Text = 'capture has not started';
+            app.working_Lamp_condition.Text = 'Collection has not started';
             app.breakDown                   = false;
             pause('on');
         end
@@ -718,7 +726,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             else
                 % Change to a 1x2 grid
                 app.GridLayout.RowHeight = {'1x'};
-                app.GridLayout.ColumnWidth = {242, '1x'};
+                app.GridLayout.ColumnWidth = {256, '1x'};
                 app.RightPanel.Layout.Row = 1;
                 app.RightPanel.Layout.Column = 2;
             end
@@ -741,7 +749,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
 
             % Create GridLayout
             app.GridLayout = uigridlayout(app.UIFigure);
-            app.GridLayout.ColumnWidth = {242, '1x'};
+            app.GridLayout.ColumnWidth = {256, '1x'};
             app.GridLayout.RowHeight = {'1x'};
             app.GridLayout.ColumnSpacing = 0;
             app.GridLayout.RowSpacing = 0;
@@ -750,32 +758,33 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
 
             % Create LeftPanel
             app.LeftPanel = uipanel(app.GridLayout);
+            app.LeftPanel.ForegroundColor = [1 0 0];
+            app.LeftPanel.BackgroundColor = [0.9412 0.9412 0.9412];
             app.LeftPanel.Layout.Row = 1;
             app.LeftPanel.Layout.Column = 1;
+            app.LeftPanel.FontName = 'Times New Roman';
 
             % Create DeviceConnect
             app.DeviceConnect = uibutton(app.LeftPanel, 'state');
             app.DeviceConnect.ValueChangedFcn = createCallbackFcn(app, @DeviceConnectValueChanged, true);
-            app.DeviceConnect.VerticalAlignment = 'top';
             app.DeviceConnect.Text = 'CONNECT';
-            app.DeviceConnect.BackgroundColor = [0.8 0.8 0.8];
+            app.DeviceConnect.BackgroundColor = [0.149 0.149 0.149];
             app.DeviceConnect.FontName = 'Times New Roman';
             app.DeviceConnect.FontSize = 35;
             app.DeviceConnect.FontWeight = 'bold';
-            app.DeviceConnect.FontColor = [0 0 1];
-            app.DeviceConnect.Position = [6 866 230 50];
+            app.DeviceConnect.FontColor = [0 1 0];
+            app.DeviceConnect.Position = [15 866 230 50];
 
             % Create DeviceDisconnect
             app.DeviceDisconnect = uibutton(app.LeftPanel, 'state');
             app.DeviceDisconnect.ValueChangedFcn = createCallbackFcn(app, @DeviceDisconnectValueChanged, true);
-            app.DeviceDisconnect.VerticalAlignment = 'top';
             app.DeviceDisconnect.Text = 'Disconnect';
-            app.DeviceDisconnect.BackgroundColor = [0.8 0.8 0.8];
+            app.DeviceDisconnect.BackgroundColor = [0.149 0.149 0.149];
             app.DeviceDisconnect.FontName = 'Times New Roman';
             app.DeviceDisconnect.FontSize = 35;
             app.DeviceDisconnect.FontWeight = 'bold';
             app.DeviceDisconnect.FontColor = [1 0 0];
-            app.DeviceDisconnect.Position = [5 6 230 50];
+            app.DeviceDisconnect.Position = [15 6 230 50];
 
             % Create channelChoice
             app.channelChoice = uidropdown(app.LeftPanel);
@@ -785,7 +794,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.channelChoice.FontSize = 25;
             app.channelChoice.FontWeight = 'bold';
             app.channelChoice.BackgroundColor = [0.902 0.902 0.902];
-            app.channelChoice.Position = [11 752 170 40];
+            app.channelChoice.Position = [20 752 170 40];
             app.channelChoice.Value = 'channel A';
 
             % Create widthChoice
@@ -796,41 +805,38 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.widthChoice.FontSize = 20;
             app.widthChoice.FontWeight = 'bold';
             app.widthChoice.BackgroundColor = [0.902 0.902 0.902];
-            app.widthChoice.Position = [191 752 45 40];
+            app.widthChoice.Position = [200 752 45 40];
             app.widthChoice.Value = '7';
 
             % Create paraConfirm
             app.paraConfirm = uibutton(app.LeftPanel, 'push');
             app.paraConfirm.ButtonPushedFcn = createCallbackFcn(app, @paraConfirmPushed, true);
-            app.paraConfirm.VerticalAlignment = 'top';
-            app.paraConfirm.BackgroundColor = [0.8 0.8 0.8];
+            app.paraConfirm.BackgroundColor = [0.149 0.149 0.149];
             app.paraConfirm.FontName = 'Times New Roman';
             app.paraConfirm.FontSize = 35;
             app.paraConfirm.FontWeight = 'bold';
-            app.paraConfirm.FontColor = [0 0 1];
-            app.paraConfirm.Position = [7 663 230 50];
+            app.paraConfirm.FontColor = [0 1 0];
+            app.paraConfirm.Position = [15 663 230 50];
             app.paraConfirm.Text = 'CONFIRM';
 
             % Create paraDis
             app.paraDis = uilabel(app.LeftPanel);
-            app.paraDis.HorizontalAlignment = 'center';
             app.paraDis.FontName = 'Times New Roman';
             app.paraDis.FontSize = 2;
             app.paraDis.FontWeight = 'bold';
             app.paraDis.FontAngle = 'italic';
-            app.paraDis.Position = [14 639 222 22];
+            app.paraDis.Position = [20 639 230 22];
             app.paraDis.Text = 'Signal parameter setting area';
 
             % Create paraConfirm_2
             app.paraConfirm_2 = uibutton(app.LeftPanel, 'push');
             app.paraConfirm_2.ButtonPushedFcn = createCallbackFcn(app, @paraConfirm_2ButtonPushed, true);
-            app.paraConfirm_2.VerticalAlignment = 'top';
-            app.paraConfirm_2.BackgroundColor = [0.8 0.8 0.8];
+            app.paraConfirm_2.BackgroundColor = [0.149 0.149 0.149];
             app.paraConfirm_2.FontName = 'Times New Roman';
             app.paraConfirm_2.FontSize = 35;
             app.paraConfirm_2.FontWeight = 'bold';
-            app.paraConfirm_2.FontColor = [0 0 1];
-            app.paraConfirm_2.Position = [6 480 230 50];
+            app.paraConfirm_2.FontColor = [0 1 0];
+            app.paraConfirm_2.Position = [15 480 230 50];
             app.paraConfirm_2.Text = 'DRAW';
 
             % Create HzEditField_2
@@ -839,7 +845,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.HzEditField_2.FontName = 'Times New Roman';
             app.HzEditField_2.FontSize = 15;
             app.HzEditField_2.FontWeight = 'bold';
-            app.HzEditField_2.Position = [141 537 95 20];
+            app.HzEditField_2.Position = [150 537 95 20];
             app.HzEditField_2.Value = '3.5e6';
 
             % Create FSEditFieldLabel_2
@@ -848,16 +854,15 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FSEditFieldLabel_2.FontName = 'Times New Roman';
             app.FSEditFieldLabel_2.FontSize = 15;
             app.FSEditFieldLabel_2.FontWeight = 'bold';
-            app.FSEditFieldLabel_2.Position = [106 533 25 28];
+            app.FSEditFieldLabel_2.Position = [115 533 25 28];
             app.FSEditFieldLabel_2.Text = '~';
 
             % Create paraDis_2
             app.paraDis_2 = uilabel(app.LeftPanel);
-            app.paraDis_2.HorizontalAlignment = 'center';
             app.paraDis_2.FontName = 'Times New Roman';
             app.paraDis_2.FontWeight = 'bold';
             app.paraDis_2.FontAngle = 'italic';
-            app.paraDis_2.Position = [19 455 206 22];
+            app.paraDis_2.Position = [20 455 230 22];
             app.paraDis_2.Text = 'Receiving parameter setting area';
 
             % Create ResolutionSpinnerLabel
@@ -866,7 +871,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.ResolutionSpinnerLabel.FontName = 'Times New Roman';
             app.ResolutionSpinnerLabel.FontSize = 25;
             app.ResolutionSpinnerLabel.FontWeight = 'bold';
-            app.ResolutionSpinnerLabel.Position = [27 716 119 31];
+            app.ResolutionSpinnerLabel.Position = [36 716 119 31];
             app.ResolutionSpinnerLabel.Text = 'Resolution';
 
             % Create ResolutionSpinner
@@ -877,16 +882,15 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.ResolutionSpinner.FontSize = 20;
             app.ResolutionSpinner.FontWeight = 'bold';
             app.ResolutionSpinner.BackgroundColor = [0.902 0.902 0.902];
-            app.ResolutionSpinner.Position = [181 715 54 32];
+            app.ResolutionSpinner.Position = [190 715 54 32];
             app.ResolutionSpinner.Value = 15;
 
             % Create paraDis_4
             app.paraDis_4 = uilabel(app.LeftPanel);
-            app.paraDis_4.HorizontalAlignment = 'center';
             app.paraDis_4.FontName = 'Times New Roman';
             app.paraDis_4.FontWeight = 'bold';
             app.paraDis_4.FontAngle = 'italic';
-            app.paraDis_4.Position = [11 791 197 22];
+            app.paraDis_4.Position = [20 791 230 22];
             app.paraDis_4.Text = 'Device parameter setting area';
 
             % Create FreqRangeHzEditFieldLabel
@@ -895,7 +899,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FreqRangeHzEditFieldLabel.FontName = 'Times New Roman';
             app.FreqRangeHzEditFieldLabel.FontSize = 15;
             app.FreqRangeHzEditFieldLabel.FontWeight = 'bold';
-            app.FreqRangeHzEditFieldLabel.Position = [6 550 229 37];
+            app.FreqRangeHzEditFieldLabel.Position = [15 550 229 37];
             app.FreqRangeHzEditFieldLabel.Text = 'Freq-Range (Hz)';
 
             % Create FreqRangeHzEditField
@@ -904,19 +908,19 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FreqRangeHzEditField.FontName = 'Times New Roman';
             app.FreqRangeHzEditField.FontSize = 15;
             app.FreqRangeHzEditField.FontWeight = 'bold';
-            app.FreqRangeHzEditField.Position = [6 537 106 21];
+            app.FreqRangeHzEditField.Position = [15 537 106 21];
             app.FreqRangeHzEditField.Value = '1.8e6';
 
             % Create Lamp
             app.Lamp = uilamp(app.LeftPanel);
-            app.Lamp.Position = [184 818 49 49];
+            app.Lamp.Position = [193 818 49 49];
 
             % Create Lamp_condition
             app.Lamp_condition = uilabel(app.LeftPanel);
             app.Lamp_condition.FontName = 'Times New Roman';
             app.Lamp_condition.FontSize = 15;
             app.Lamp_condition.FontAngle = 'italic';
-            app.Lamp_condition.Position = [28 818 118 37];
+            app.Lamp_condition.Position = [23 818 154 37];
             app.Lamp_condition.Text = {'Device acquisition'; ' has not started'};
 
             % Create sig_receive_para
@@ -927,7 +931,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_receive_para.FontSize = 15;
             app.sig_receive_para.FontWeight = 'bold';
             app.sig_receive_para.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_receive_para.Position = [6 418 230 30];
+            app.sig_receive_para.Position = [15 418 230 30];
             app.sig_receive_para.Value = 'Number of Captured Signals';
 
             % Create sig_eject_para
@@ -938,7 +942,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_eject_para.FontSize = 15;
             app.sig_eject_para.FontWeight = 'bold';
             app.sig_eject_para.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_eject_para.Position = [6 607 230 31];
+            app.sig_eject_para.Position = [15 607 230 31];
             app.sig_eject_para.Value = 'signal main frequency';
 
             % Create sig_eject_edit
@@ -947,7 +951,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_eject_edit.FontName = 'Times New Roman';
             app.sig_eject_edit.FontSize = 15;
             app.sig_eject_edit.FontWeight = 'bold';
-            app.sig_eject_edit.Position = [6 584 229 24];
+            app.sig_eject_edit.Position = [15 584 229 24];
             app.sig_eject_edit.Value = '2.5e6';
 
             % Create sig_receive_edit
@@ -956,19 +960,18 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_receive_edit.FontName = 'Times New Roman';
             app.sig_receive_edit.FontSize = 15;
             app.sig_receive_edit.FontWeight = 'bold';
-            app.sig_receive_edit.Position = [6 395 230 24];
+            app.sig_receive_edit.Position = [15 395 230 24];
             app.sig_receive_edit.Value = '20';
 
             % Create paraConfirm_4
             app.paraConfirm_4 = uibutton(app.LeftPanel, 'push');
             app.paraConfirm_4.ButtonPushedFcn = createCallbackFcn(app, @paraConfirm_4ButtonPushed, true);
-            app.paraConfirm_4.VerticalAlignment = 'top';
-            app.paraConfirm_4.BackgroundColor = [0.8 0.8 0.8];
+            app.paraConfirm_4.BackgroundColor = [0.149 0.149 0.149];
             app.paraConfirm_4.FontName = 'Times New Roman';
             app.paraConfirm_4.FontSize = 35;
             app.paraConfirm_4.FontWeight = 'bold';
-            app.paraConfirm_4.FontColor = [0 0 1];
-            app.paraConfirm_4.Position = [6 285 230 50];
+            app.paraConfirm_4.FontColor = [0 1 0];
+            app.paraConfirm_4.Position = [15 285 230 50];
             app.paraConfirm_4.Text = 'CAPTURE';
 
             % Create cd_edit
@@ -977,7 +980,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.cd_edit.FontName = 'Times New Roman';
             app.cd_edit.FontSize = 15;
             app.cd_edit.FontWeight = 'bold';
-            app.cd_edit.Position = [6 340 230 25];
+            app.cd_edit.Position = [15 340 230 25];
             app.cd_edit.Value = 'DESKTOP';
 
             % Create sig_name_edit
@@ -988,29 +991,31 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_name_edit.FontSize = 15;
             app.sig_name_edit.FontWeight = 'bold';
             app.sig_name_edit.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_name_edit.Position = [5 364 231 25];
+            app.sig_name_edit.Position = [14 364 231 25];
             app.sig_name_edit.Value = 'SavingPath';
 
             % Create working_Lamp
             app.working_Lamp = uilamp(app.LeftPanel);
-            app.working_Lamp.Position = [6 253 20 20];
+            app.working_Lamp.Position = [15 253 20 20];
 
             % Create working_Lamp_condition
             app.working_Lamp_condition = uilabel(app.LeftPanel);
             app.working_Lamp_condition.FontName = 'Times New Roman';
             app.working_Lamp_condition.FontSize = 15;
             app.working_Lamp_condition.FontAngle = 'italic';
-            app.working_Lamp_condition.Position = [39 252 185 21];
+            app.working_Lamp_condition.Position = [48 252 185 21];
             app.working_Lamp_condition.Text = 'Device acquisition has not started';
 
             % Create TerminateButton
             app.TerminateButton = uibutton(app.LeftPanel, 'push');
             app.TerminateButton.ButtonPushedFcn = createCallbackFcn(app, @TerminateButtonPushed, true);
-            app.TerminateButton.BackgroundColor = [0.9882 0.6941 0.6941];
+            app.TerminateButton.BackgroundColor = [0.7216 0 0];
             app.TerminateButton.FontName = 'Times New Roman';
             app.TerminateButton.FontSize = 25;
             app.TerminateButton.FontWeight = 'bold';
-            app.TerminateButton.Position = [55 215 125 38];
+            app.TerminateButton.FontAngle = 'italic';
+            app.TerminateButton.FontColor = [0 0.749 0];
+            app.TerminateButton.Position = [64.5 211 124 39];
             app.TerminateButton.Text = 'Terminate';
 
             % Create sig_condition
@@ -1018,7 +1023,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_condition.FontName = 'Times New Roman';
             app.sig_condition.FontSize = 15;
             app.sig_condition.FontAngle = 'italic';
-            app.sig_condition.Position = [6 169 230 22];
+            app.sig_condition.Position = [15 169 230 22];
             app.sig_condition.Text = 'Device acquisition has not started';
 
             % Create sig_condition_time
@@ -1027,7 +1032,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_condition_time.FontName = 'Times New Roman';
             app.sig_condition_time.FontSize = 15;
             app.sig_condition_time.FontAngle = 'italic';
-            app.sig_condition_time.Position = [6 113 230 57];
+            app.sig_condition_time.Position = [15 113 230 57];
             app.sig_condition_time.Text = '';
 
             % Create toolBoxfilePath
@@ -1036,7 +1041,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.toolBoxfilePath.FontName = 'Times New Roman';
             app.toolBoxfilePath.FontSize = 15;
             app.toolBoxfilePath.FontWeight = 'bold';
-            app.toolBoxfilePath.Position = [7 965 229 24];
+            app.toolBoxfilePath.Position = [16 965 229 24];
             app.toolBoxfilePath.Value = 'Path';
 
             % Create addPath
@@ -1044,13 +1049,13 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.addPath.ValueChangedFcn = createCallbackFcn(app, @addPathValueChanged, true);
             app.addPath.VerticalAlignment = 'top';
             app.addPath.Text = 'addPath';
-            app.addPath.BackgroundColor = [1 0.4118 0.1608];
+            app.addPath.BackgroundColor = [0.9882 0.5529 0.3647];
             app.addPath.FontName = 'Calibri';
             app.addPath.FontSize = 25;
             app.addPath.FontWeight = 'bold';
             app.addPath.FontAngle = 'italic';
             app.addPath.FontColor = [0 0 1];
-            app.addPath.Position = [6 924 230 39];
+            app.addPath.Position = [42 919 173 40];
 
             % Create sig_condition_time_2
             app.sig_condition_time_2 = uilabel(app.LeftPanel);
@@ -1058,7 +1063,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_condition_time_2.FontName = 'Times New Roman';
             app.sig_condition_time_2.FontSize = 15;
             app.sig_condition_time_2.FontAngle = 'italic';
-            app.sig_condition_time_2.Position = [5 65 231 49];
+            app.sig_condition_time_2.Position = [14 65 231 49];
             app.sig_condition_time_2.Text = '';
 
             % Create RightPanel
@@ -1073,8 +1078,17 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             ylabel(app.recieve_ch1, '')
             app.recieve_ch1.FontName = 'Times New Roman';
             app.recieve_ch1.FontSize = 15;
+            app.recieve_ch1.GridLineStyle = '--';
+            app.recieve_ch1.GridColor = [1 1 0];
+            app.recieve_ch1.GridAlpha = 0.5;
+            app.recieve_ch1.Color = [0 0 0];
+            app.recieve_ch1.XGrid = 'on';
+            app.recieve_ch1.YGrid = 'on';
+            app.recieve_ch1.LabelFontSizeMultiplier = 1;
+            app.recieve_ch1.TitleFontSizeMultiplier = 1.5;
             app.recieve_ch1.TitleFontWeight = 'bold';
-            app.recieve_ch1.Position = [1 729 1244 260];
+            app.recieve_ch1.BackgroundColor = [1 1 1];
+            app.recieve_ch1.Position = [7 741 1225 247];
 
             % Create recieve_ch1_2
             app.recieve_ch1_2 = uiaxes(app.RightPanel);
@@ -1083,8 +1097,17 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             ylabel(app.recieve_ch1_2, '')
             app.recieve_ch1_2.FontName = 'Times New Roman';
             app.recieve_ch1_2.FontSize = 15;
+            app.recieve_ch1_2.GridLineStyle = '--';
+            app.recieve_ch1_2.GridColor = [1 1 0];
+            app.recieve_ch1_2.GridAlpha = 0.5;
+            app.recieve_ch1_2.Color = [0 0 0];
+            app.recieve_ch1_2.XGrid = 'on';
+            app.recieve_ch1_2.YGrid = 'on';
+            app.recieve_ch1_2.LabelFontSizeMultiplier = 1;
+            app.recieve_ch1_2.TitleFontSizeMultiplier = 1.5;
             app.recieve_ch1_2.TitleFontWeight = 'bold';
-            app.recieve_ch1_2.Position = [1 499 1244 230];
+            app.recieve_ch1_2.BackgroundColor = [1 1 1];
+            app.recieve_ch1_2.Position = [7 494 1225 247];
 
             % Create recieve_ch1_3
             app.recieve_ch1_3 = uiaxes(app.RightPanel);
@@ -1093,8 +1116,17 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             ylabel(app.recieve_ch1_3, '')
             app.recieve_ch1_3.FontName = 'Times New Roman';
             app.recieve_ch1_3.FontSize = 15;
+            app.recieve_ch1_3.GridLineStyle = '--';
+            app.recieve_ch1_3.GridColor = [1 1 0];
+            app.recieve_ch1_3.GridAlpha = 0.5;
+            app.recieve_ch1_3.Color = [0 0 0];
+            app.recieve_ch1_3.XGrid = 'on';
+            app.recieve_ch1_3.YGrid = 'on';
+            app.recieve_ch1_3.LabelFontSizeMultiplier = 1;
+            app.recieve_ch1_3.TitleFontSizeMultiplier = 1.5;
             app.recieve_ch1_3.TitleFontWeight = 'bold';
-            app.recieve_ch1_3.Position = [1 262 1244 237];
+            app.recieve_ch1_3.BackgroundColor = [1 1 1];
+            app.recieve_ch1_3.Position = [7 247 1225 247];
 
             % Create recieve_ch1_4
             app.recieve_ch1_4 = uiaxes(app.RightPanel);
@@ -1103,8 +1135,17 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             ylabel(app.recieve_ch1_4, '')
             app.recieve_ch1_4.FontName = 'Times New Roman';
             app.recieve_ch1_4.FontSize = 15;
+            app.recieve_ch1_4.GridLineStyle = '--';
+            app.recieve_ch1_4.GridColor = [1 1 0.0667];
+            app.recieve_ch1_4.GridAlpha = 0.5;
+            app.recieve_ch1_4.Color = [0 0 0];
+            app.recieve_ch1_4.XGrid = 'on';
+            app.recieve_ch1_4.YGrid = 'on';
+            app.recieve_ch1_4.LabelFontSizeMultiplier = 1;
+            app.recieve_ch1_4.TitleFontSizeMultiplier = 1.5;
             app.recieve_ch1_4.TitleFontWeight = 'bold';
-            app.recieve_ch1_4.Position = [4 7 1241 252];
+            app.recieve_ch1_4.BackgroundColor = [1 1 1];
+            app.recieve_ch1_4.Position = [7 0 1225 247];
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
