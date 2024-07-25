@@ -37,6 +37,10 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
         toolBoxfilePath            matlab.ui.control.EditField
         addPath                    matlab.ui.control.StateButton
         sig_condition_time_2       matlab.ui.control.Label
+        adjustconfirm              matlab.ui.control.Button
+        Lamp_adjust                matlab.ui.control.Lamp
+        adjustconfirm_2            matlab.ui.control.Button
+        paraDis_5                  matlab.ui.control.Label
         RightPanel                 matlab.ui.container.Panel
         recieve_ch1                matlab.ui.control.UIAxes
         recieve_ch1_2              matlab.ui.control.UIAxes
@@ -61,7 +65,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
         chB_width              % ChannelB dynamic
         chC_width              % ChannelC dynamic
         chD_width              % ChannelD dynamic
-        channelResolution      % 
+        channelResolution      %
         prefs                  % preset frequency
         freq                   % eject frequency
         waveNum                % wave number
@@ -76,30 +80,44 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
         Ulti_receive_choice    % recieve sig choice
         sigSampleNum           % capturing sig sampling number
         numCaptures            % sig number for one capture
-        chA                    % 
-        chB                    % 
-        chC                    % 
-        chD                    % 
+        chA                    %
+        chB                    %
+        chC                    %
+        chD                    %
         
         sig_name_choice        % saving Para
         fileName               % saving name Choice
-        breakDown              % 
+        breakDown              %
         figureNameChannelA     %
         figureNameChannelB     %
         figureNameChannelC     %
         figureNameChannelD     %
         targetfile
+        
+        
+        adjustPARA
+        
+        channelASNR
+        channelBSNR
+        channelCSNR
+        channelDSNR
+        
+        channelAmax
+        channelBmax
+        channelCmax
+        channelDmax
+        totoDynamicRange
     end
     
     methods (Access = private)
         
-        %% AWG ï¿½1ï¿½ (sin form)
+        %% AWG ÿ1ÿ (sin form)
         function sig_cw(app,Obj,timebaseIndex,f,N)
             PS5000aConfig;
             sigGenGroupObj = get(Obj, 'Signalgenerator');
             sigGenGroupObj = sigGenGroupObj(1);
             Tinterval = (timebaseIndex-2)/125000000;
-            % sig frequency fï¿½wave number for one capture N
+            % sig frequency fÿwave number for one capture N
             if ~exist('f','var');f = 25e5;end
             if ~exist('N','var');N = 3;end
             fsstart = 1/(N/f-Tinterval);
@@ -130,13 +148,13 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 operation, indexMode, shots, sweeps,...
                 triggerType, triggerSource, extInThresholdMv);
         end
-        % ï¿½2ï¿½AWG:chirp
+        % ÿ2ÿAWG:chirp
         function sig_chirp(app,Obj,timebaseIndex,f,N,f_start,f_end)
             PS5000aConfig;
             sigGenGroupObj = get(Obj, 'Signalgenerator');
             sigGenGroupObj = sigGenGroupObj(1);
             Tinterval = (timebaseIndex-2)/125000000;
-            % sig frequency fï¿½wave number for one capture N
+            % sig frequency fÿwave number for one capture N
             if ~exist('f','var');f = 25e5;end
             if ~exist('N','var');N = 3;end
             if ~exist('f_start','var');f_start = f/sqrt(2);end
@@ -169,7 +187,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 operation, indexMode, shots, sweeps,...
                 triggerType, triggerSource, extInThresholdMv);
         end
-        %% 
+        %%
         function [chA,chB,chC,chD,fs] = func_rapidBlockCap(app,Obj,timebaseIndex,numSSamples,numCaptures)
 %             if ~exist('numsamples','var');numSSamples = 15000;end
             if ~exist('numCaptures','var');numCaptures = 50;end
@@ -207,18 +225,31 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             end
         end
         
-%         function responsive_pause(app,event, total_pause_time)
-%             interval = 0.1;
-%             iterations = round(total_pause_time / interval);
-%             
-%             for i = 1:iterations
-%                 pause(interval);
-%                 
-%                 if event == true
-%                     break;  
-%                 end
-%             end
-%         end
+        function current_width = adjust_gain(app,current_width, channel_max, channel_snr, set_channel)
+            if (sum(channel_snr < 10) > 3 && channel_snr(end) < 10)
+                if current_width > 0
+                    current_width = current_width - 1;
+                    set_channel(current_width);
+                end
+            elseif (sum(channel_max > (app.totoDynamicRange(current_width + 1))-5) > 2 && channel_max(end) > (app.totoDynamicRange(current_width + 1))-5)
+                if current_width < 10
+                    current_width = current_width + 1;
+                    set_channel(current_width);
+                end
+            end
+        end
+        %         function responsive_pause(app,event, total_pause_time)
+        %             interval = 0.1;
+        %             iterations = round(total_pause_time / interval);
+        %
+        %             for i = 1:iterations
+        %                 pause(interval);
+        %
+        %                 if event == true
+        %                     break;
+        %                 end
+        %             end
+        %         end
     end
 
     % Callbacks that handle component events
@@ -226,14 +257,15 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
 
         % Code that executes after component creation
         function startupFcn(app)
-
-           
+            
+            
             set(app.Lamp,'color','red');              % lamp for connecting
             set(app.working_Lamp,'color','black');    % lamp for waorking
-%             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\github_repo'));
-%             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\Pico Technology'));
-%             
-            app.Lamp_condition.Text         = strcat('Device Is Not Connectedï¿½');
+            set(app.Lamp_adjust,'color','red');       % lamp for dynamic adjust
+            %             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\github_repo'));
+            %             addpath(genpath('C:\Users\Admin\Desktop\file\mat for pico\envir_ps5000\Pico Technology'));
+            %
+            app.Lamp_condition.Text         = strcat('Device Is Not Connectedÿ');
             app.chA_width                   = 7;
             app.chB_width                   = 7;
             app.chC_width                   = 7;
@@ -250,7 +282,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.HzEditField_2.Value         = num2str(app.freq*sqrt(2));
             app.cd                          = [fullfile(getenv('USERPROFILE'), 'Desktop'),'\'];
             app.sigNum                      = 20;
-            app.pauseTime                   = 30; 
+            app.pauseTime                   = 30;
             app.Ulti_receive_choice         = 'Number of Captured Signals';
             app.sigSampleNum                = 15e3;
             app.sig_name_choice             = 'saving Path';
@@ -273,6 +305,8 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.recieve_ch1_2.XLabel.String = 'Sampling Point';
             app.recieve_ch1_3.XLabel.String = 'Sampling Point';
             app.recieve_ch1_4.XLabel.String = 'Sampling Point';
+            app.totoDynamicRange            = [10,20,50,100,200,500,1e3,2e3,5e3,10e3,20e3,50e3];
+            app.adjustPARA                  = 0;
         end
 
         % Value changed function: DeviceConnect
@@ -297,7 +331,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                 connect(app.Obj);
                 set(app.Lamp,'color','green');
                 app.DeviceDisconnect.Value = false;
-                app.Lamp_condition.Text = strcat('Device Is Connected Successfullyï¿½');
+                app.Lamp_condition.Text = strcat('Device Is Connected Successfullyÿ');
             end
         end
 
@@ -312,7 +346,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                     delete(app.Obj);
                     app.DeviceConnect.Value = false;
                     set(app.Lamp,'color','red');
-                    app.Lamp_condition.Text = strcat('Device Is Not Connectedï¿½');
+                    app.Lamp_condition.Text = strcat('Device Is Not Connectedÿ');
                 end
             end
         end
@@ -510,10 +544,14 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                     [status.setChC] = invoke(app.Obj, 'ps5000aSetChannel', 2, 1, 1, app.chC_width, 0.0);
                     [status.setChD] = invoke(app.Obj, 'ps5000aSetChannel', 3, 1, 1, app.chD_width, 0.0);
                 end
-                % ï¿½ï¿½ï¿½ Max. resolution with 2 channels enabled is 15 bits.
+                % ÿÿÿ Max. resolution with 2 channels enabled is 15 bits.
                 [status.resolution, resolution] = invoke(app.Obj, 'ps5000aSetDeviceResolution', app.channelResolution);
                 app.paraConfirm_choice = true;
             end
+            thisChannelA_width = app.chA_width;
+            thisChannelB_width = app.chB_width;
+            thisChannelC_width = app.chC_width;
+            thisChannelD_width = app.chD_width;
             app.breakDown                   = false;
             app.working_Lamp_condition.Text = 'Collecting Is Underway!';
             sigNum_output_text              = 'Collected Signal Number:';
@@ -558,6 +596,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                         test.(['chB_',ccStr]) = detrend(mean(thischB,2));
                         test.(['chC_',ccStr]) = detrend(mean(thischC,2));
                         test.(['chD_',ccStr]) = detrend(mean(thischD,2));
+                        % plot the collected DATA
                         plot(app.recieve_ch1,detrend(mean(thischA,2)),'color','green');
                         app.recieve_ch1.Title.String = app.figureNameChannelA;
                         plot(app.recieve_ch1_2,detrend(mean(thischB,2)),'color','green');
@@ -602,10 +641,40 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
                         app.recieve_ch1.XLabel.String   = 'Sampling Point';
                         app.recieve_ch1_2.XLabel.String = 'Sampling Point';
                     end
-                    test.(['fs',ccStr]) = fs; 
+                    test.(['fs',ccStr]) = fs;
                     
                     app.sig_condition.Text = [sigNum_output_text,num2str(ii)];
                     totalSeconds = (app.sigNum-1) * app.pauseTime;
+                    
+                    
+                    
+                    if app.adjustPARA == 1
+                        update_max_and_snr = @(data) struct('max', max(abs(detrend(mean(data, 2)))),'snr', max(detrend(abs(mean(data, 2)))) / mean(abs(detrend(mean(data, 2)))));
+                        update_recent_values = @(recent_values, new_value) recent_values(max(1, end-4):end);
+                        
+                        thischannelA = update_max_and_snr(thischA);
+                        thischannelB = update_max_and_snr(thischB);
+                        app.channelAmax = update_recent_values([app.channelAmax; thischannelA.max], thischannelA.max);
+                        app.channelBmax = update_recent_values([app.channelBmax; thischannelB.max], thischannelB.max);
+                        app.channelASNR = update_recent_values([app.channelASNR; thischannelA.snr], thischannelA.snr);
+                        app.channelBSNR = update_recent_values([app.channelBSNR; thischannelB.snr], thischannelB.snr);
+                        thisChannelA_width = app.adjust_gain(thisChannelA_width, app.channelAmax, app.channelASNR, @(width) invoke(app.Obj, 'ps5000aSetChannel', 0, 1, 1, width, 0.0));
+                        thisChannelB_width = app.adjust_gain(thisChannelB_width, app.channelBmax, app.channelBSNR, @(width) invoke(app.Obj, 'ps5000aSetChannel', 1, 1, 1, width, 0.0));
+                        
+                        if ~isempty(thischC)
+                            thischannelC = update_max_and_snr(thischC);
+                            app.channelCmax = update_recent_values([app.channelCmax; thischannelC.max], thischannelC.max);
+                            app.channelCSNR = update_recent_values([app.channelCSNR; thischannelC.snr], thischannelC.snr);
+                            thisChannelC_width = app.adjust_gain(thisChannelC_width, app.channelCmax, app.channelCSNR, @(width) invoke(app.Obj, 'ps5000aSetChannel', 2, 1, 1, width, 0.0));
+                        end
+                        if ~isempty(thischD)
+                            thischannelD = update_max_and_snr(thischD);
+                            app.channelDmax = update_recent_values([app.channelDmax; thischannelD.max], thischannelD.max);
+                            app.channelDSNR = update_recent_values([app.channelDSNR; thischannelD.snr], thischannelD.snr);
+                            thisChannelD_width = app.adjust_gain(thisChannelD_width, app.channelDmax, app.channelDSNR, @(width) invoke(app.Obj, 'ps5000aSetChannel', 3, 1, 1, width, 0.0));
+                        end
+                    end
+                    
                     
                     if ii ~= app.sigNum
                         interval_time = 1;
@@ -714,6 +783,18 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
 
         end
 
+        % Button pushed function: adjustconfirm
+        function adjustconfirmButtonPushed(app, event)
+            app.adjustPARA = 1;
+            set(app.Lamp_adjust,'color','green');
+        end
+
+        % Button pushed function: adjustconfirm_2
+        function adjustconfirm_2ButtonPushed(app, event)
+            app.adjustPARA = 0;
+            set(app.Lamp_adjust,'color','red');
+        end
+
         % Changes arrangement of the app based on UIFigure width
         function updateAppLayout(app, event)
             currentFigureWidth = app.UIFigure.Position(3);
@@ -773,7 +854,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.DeviceConnect.FontSize = 35;
             app.DeviceConnect.FontWeight = 'bold';
             app.DeviceConnect.FontColor = [0 1 0];
-            app.DeviceConnect.Position = [15 866 230 50];
+            app.DeviceConnect.Position = [15 868 230 50];
 
             % Create DeviceDisconnect
             app.DeviceDisconnect = uibutton(app.LeftPanel, 'state');
@@ -794,7 +875,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.channelChoice.FontSize = 25;
             app.channelChoice.FontWeight = 'bold';
             app.channelChoice.BackgroundColor = [0.902 0.902 0.902];
-            app.channelChoice.Position = [20 752 170 40];
+            app.channelChoice.Position = [20 759 170 40];
             app.channelChoice.Value = 'channel A';
 
             % Create widthChoice
@@ -805,7 +886,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.widthChoice.FontSize = 20;
             app.widthChoice.FontWeight = 'bold';
             app.widthChoice.BackgroundColor = [0.902 0.902 0.902];
-            app.widthChoice.Position = [200 752 45 40];
+            app.widthChoice.Position = [200 759 45 40];
             app.widthChoice.Value = '7';
 
             % Create paraConfirm
@@ -816,7 +897,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraConfirm.FontSize = 35;
             app.paraConfirm.FontWeight = 'bold';
             app.paraConfirm.FontColor = [0 1 0];
-            app.paraConfirm.Position = [15 663 230 50];
+            app.paraConfirm.Position = [15 671 230 50];
             app.paraConfirm.Text = 'CONFIRM';
 
             % Create paraDis
@@ -825,7 +906,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraDis.FontSize = 2;
             app.paraDis.FontWeight = 'bold';
             app.paraDis.FontAngle = 'italic';
-            app.paraDis.Position = [20 639 230 22];
+            app.paraDis.Position = [20 647 230 22];
             app.paraDis.Text = 'Signal parameter setting area';
 
             % Create paraConfirm_2
@@ -836,7 +917,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraConfirm_2.FontSize = 35;
             app.paraConfirm_2.FontWeight = 'bold';
             app.paraConfirm_2.FontColor = [0 1 0];
-            app.paraConfirm_2.Position = [15 480 230 50];
+            app.paraConfirm_2.Position = [15 491 230 50];
             app.paraConfirm_2.Text = 'DRAW';
 
             % Create HzEditField_2
@@ -845,7 +926,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.HzEditField_2.FontName = 'Times New Roman';
             app.HzEditField_2.FontSize = 15;
             app.HzEditField_2.FontWeight = 'bold';
-            app.HzEditField_2.Position = [150 537 95 20];
+            app.HzEditField_2.Position = [150 546 95 20];
             app.HzEditField_2.Value = '3.5e6';
 
             % Create FSEditFieldLabel_2
@@ -854,7 +935,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FSEditFieldLabel_2.FontName = 'Times New Roman';
             app.FSEditFieldLabel_2.FontSize = 15;
             app.FSEditFieldLabel_2.FontWeight = 'bold';
-            app.FSEditFieldLabel_2.Position = [115 533 25 28];
+            app.FSEditFieldLabel_2.Position = [115 542 25 28];
             app.FSEditFieldLabel_2.Text = '~';
 
             % Create paraDis_2
@@ -862,7 +943,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraDis_2.FontName = 'Times New Roman';
             app.paraDis_2.FontWeight = 'bold';
             app.paraDis_2.FontAngle = 'italic';
-            app.paraDis_2.Position = [20 455 230 22];
+            app.paraDis_2.Position = [20 466 230 22];
             app.paraDis_2.Text = 'Receiving parameter setting area';
 
             % Create ResolutionSpinnerLabel
@@ -871,7 +952,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.ResolutionSpinnerLabel.FontName = 'Times New Roman';
             app.ResolutionSpinnerLabel.FontSize = 25;
             app.ResolutionSpinnerLabel.FontWeight = 'bold';
-            app.ResolutionSpinnerLabel.Position = [36 716 119 31];
+            app.ResolutionSpinnerLabel.Position = [36 724 119 31];
             app.ResolutionSpinnerLabel.Text = 'Resolution';
 
             % Create ResolutionSpinner
@@ -882,7 +963,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.ResolutionSpinner.FontSize = 20;
             app.ResolutionSpinner.FontWeight = 'bold';
             app.ResolutionSpinner.BackgroundColor = [0.902 0.902 0.902];
-            app.ResolutionSpinner.Position = [190 715 54 32];
+            app.ResolutionSpinner.Position = [190 723 54 32];
             app.ResolutionSpinner.Value = 15;
 
             % Create paraDis_4
@@ -890,7 +971,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraDis_4.FontName = 'Times New Roman';
             app.paraDis_4.FontWeight = 'bold';
             app.paraDis_4.FontAngle = 'italic';
-            app.paraDis_4.Position = [20 791 230 22];
+            app.paraDis_4.Position = [20 802 230 22];
             app.paraDis_4.Text = 'Device parameter setting area';
 
             % Create FreqRangeHzEditFieldLabel
@@ -899,7 +980,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FreqRangeHzEditFieldLabel.FontName = 'Times New Roman';
             app.FreqRangeHzEditFieldLabel.FontSize = 15;
             app.FreqRangeHzEditFieldLabel.FontWeight = 'bold';
-            app.FreqRangeHzEditFieldLabel.Position = [15 550 229 37];
+            app.FreqRangeHzEditFieldLabel.Position = [15 559 229 37];
             app.FreqRangeHzEditFieldLabel.Text = 'Freq-Range (Hz)';
 
             % Create FreqRangeHzEditField
@@ -908,19 +989,19 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.FreqRangeHzEditField.FontName = 'Times New Roman';
             app.FreqRangeHzEditField.FontSize = 15;
             app.FreqRangeHzEditField.FontWeight = 'bold';
-            app.FreqRangeHzEditField.Position = [15 537 106 21];
+            app.FreqRangeHzEditField.Position = [15 546 106 21];
             app.FreqRangeHzEditField.Value = '1.8e6';
 
             % Create Lamp
             app.Lamp = uilamp(app.LeftPanel);
-            app.Lamp.Position = [193 818 49 49];
+            app.Lamp.Position = [193 817 49 49];
 
             % Create Lamp_condition
             app.Lamp_condition = uilabel(app.LeftPanel);
             app.Lamp_condition.FontName = 'Times New Roman';
             app.Lamp_condition.FontSize = 15;
             app.Lamp_condition.FontAngle = 'italic';
-            app.Lamp_condition.Position = [23 818 154 37];
+            app.Lamp_condition.Position = [23 822 154 37];
             app.Lamp_condition.Text = {'Device acquisition'; ' has not started'};
 
             % Create sig_receive_para
@@ -931,7 +1012,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_receive_para.FontSize = 15;
             app.sig_receive_para.FontWeight = 'bold';
             app.sig_receive_para.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_receive_para.Position = [15 418 230 30];
+            app.sig_receive_para.Position = [15 434 230 30];
             app.sig_receive_para.Value = 'Number of Captured Signals';
 
             % Create sig_eject_para
@@ -942,8 +1023,8 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_eject_para.FontSize = 15;
             app.sig_eject_para.FontWeight = 'bold';
             app.sig_eject_para.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_eject_para.Position = [15 607 230 31];
-            app.sig_eject_para.Value = 'signal main frequency';
+            app.sig_eject_para.Position = [15 616 230 31];
+            app.sig_eject_para.Value = 'Number of pulses';
 
             % Create sig_eject_edit
             app.sig_eject_edit = uieditfield(app.LeftPanel, 'text');
@@ -951,7 +1032,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_eject_edit.FontName = 'Times New Roman';
             app.sig_eject_edit.FontSize = 15;
             app.sig_eject_edit.FontWeight = 'bold';
-            app.sig_eject_edit.Position = [15 584 229 24];
+            app.sig_eject_edit.Position = [15 593 229 24];
             app.sig_eject_edit.Value = '2.5e6';
 
             % Create sig_receive_edit
@@ -960,7 +1041,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_receive_edit.FontName = 'Times New Roman';
             app.sig_receive_edit.FontSize = 15;
             app.sig_receive_edit.FontWeight = 'bold';
-            app.sig_receive_edit.Position = [15 395 230 24];
+            app.sig_receive_edit.Position = [15 411 230 24];
             app.sig_receive_edit.Value = '20';
 
             % Create paraConfirm_4
@@ -971,7 +1052,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.paraConfirm_4.FontSize = 35;
             app.paraConfirm_4.FontWeight = 'bold';
             app.paraConfirm_4.FontColor = [0 1 0];
-            app.paraConfirm_4.Position = [15 285 230 50];
+            app.paraConfirm_4.Position = [15 264 230 50];
             app.paraConfirm_4.Text = 'CAPTURE';
 
             % Create cd_edit
@@ -980,7 +1061,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.cd_edit.FontName = 'Times New Roman';
             app.cd_edit.FontSize = 15;
             app.cd_edit.FontWeight = 'bold';
-            app.cd_edit.Position = [15 340 230 25];
+            app.cd_edit.Position = [15 356 230 25];
             app.cd_edit.Value = 'DESKTOP';
 
             % Create sig_name_edit
@@ -991,19 +1072,19 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_name_edit.FontSize = 15;
             app.sig_name_edit.FontWeight = 'bold';
             app.sig_name_edit.BackgroundColor = [0.902 0.902 0.902];
-            app.sig_name_edit.Position = [14 364 231 25];
+            app.sig_name_edit.Position = [14 380 231 25];
             app.sig_name_edit.Value = 'SavingPath';
 
             % Create working_Lamp
             app.working_Lamp = uilamp(app.LeftPanel);
-            app.working_Lamp.Position = [15 253 20 20];
+            app.working_Lamp.Position = [15 240 20 20];
 
             % Create working_Lamp_condition
             app.working_Lamp_condition = uilabel(app.LeftPanel);
             app.working_Lamp_condition.FontName = 'Times New Roman';
             app.working_Lamp_condition.FontSize = 15;
             app.working_Lamp_condition.FontAngle = 'italic';
-            app.working_Lamp_condition.Position = [48 252 185 21];
+            app.working_Lamp_condition.Position = [48 239 185 21];
             app.working_Lamp_condition.Text = 'Device acquisition has not started';
 
             % Create TerminateButton
@@ -1015,7 +1096,7 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.TerminateButton.FontWeight = 'bold';
             app.TerminateButton.FontAngle = 'italic';
             app.TerminateButton.FontColor = [0 0.749 0];
-            app.TerminateButton.Position = [64.5 211 124 39];
+            app.TerminateButton.Position = [65 198 124 39];
             app.TerminateButton.Text = 'Terminate';
 
             % Create sig_condition
@@ -1065,6 +1146,41 @@ classdef app1_autoreflow_exported < matlab.apps.AppBase
             app.sig_condition_time_2.FontAngle = 'italic';
             app.sig_condition_time_2.Position = [14 65 231 49];
             app.sig_condition_time_2.Text = '';
+
+            % Create adjustconfirm
+            app.adjustconfirm = uibutton(app.LeftPanel, 'push');
+            app.adjustconfirm.ButtonPushedFcn = createCallbackFcn(app, @adjustconfirmButtonPushed, true);
+            app.adjustconfirm.BackgroundColor = [0 0 0];
+            app.adjustconfirm.FontName = 'Arial';
+            app.adjustconfirm.FontSize = 25;
+            app.adjustconfirm.FontWeight = 'bold';
+            app.adjustconfirm.FontColor = [0 1 0];
+            app.adjustconfirm.Position = [117 316 45 37];
+            app.adjustconfirm.Text = 'on';
+
+            % Create Lamp_adjust
+            app.Lamp_adjust = uilamp(app.LeftPanel);
+            app.Lamp_adjust.Position = [220 322 24 24];
+
+            % Create adjustconfirm_2
+            app.adjustconfirm_2 = uibutton(app.LeftPanel, 'push');
+            app.adjustconfirm_2.ButtonPushedFcn = createCallbackFcn(app, @adjustconfirm_2ButtonPushed, true);
+            app.adjustconfirm_2.BackgroundColor = [0 0 0];
+            app.adjustconfirm_2.FontName = 'Arial';
+            app.adjustconfirm_2.FontSize = 25;
+            app.adjustconfirm_2.FontWeight = 'bold';
+            app.adjustconfirm_2.FontColor = [0 1 0];
+            app.adjustconfirm_2.Position = [167 315 48 37];
+            app.adjustconfirm_2.Text = 'off';
+
+            % Create paraDis_5
+            app.paraDis_5 = uilabel(app.LeftPanel);
+            app.paraDis_5.FontName = 'Times New Roman';
+            app.paraDis_5.FontSize = 2;
+            app.paraDis_5.FontWeight = 'bold';
+            app.paraDis_5.FontAngle = 'italic';
+            app.paraDis_5.Position = [16 313 111 37];
+            app.paraDis_5.Text = {'Dynamic range '; 'adjust'};
 
             % Create RightPanel
             app.RightPanel = uipanel(app.GridLayout);
